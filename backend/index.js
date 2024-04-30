@@ -13,15 +13,10 @@ import { verifyToken } from "./middleware/auth.js"
 import { createPost } from "./controllers/posts.js"
  import  authRoutes from "./routes/auth.js"
  import userRoutes from "./routes/users.js"
-import postRoutes  from './ROUTES/posts.js'
+import postRoutes  from './routes/posts.js'
 import User from "./models/User.js"
 import Post from "./models/Post.js"
 import {users,posts}from "./data/index.js"
-
-
- 
-
-
 
 /* Configurations*/
 const __filename=fileURLToPath(import.meta.url);
@@ -63,8 +58,9 @@ the register our controller
 
 /*Routes */
 app.use("/auth",authRoutes)
-app.use("/users",usersRoutes)
-app.use("/posts",postsRoutes)
+app.use("/users",userRoutes)
+/*whenever we go to those url end points the app uses that router */
+app.use("/posts",postRoutes)
 
 
 /*MOngoose SEtUp*/
