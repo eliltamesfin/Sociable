@@ -1,20 +1,17 @@
 import mongoose from "mongoose";
+import User from "./User.js";
 const postSchema = mongoose.Schema(
   {
     userId: {
-      type: String,
-      required: true,
-    },
-    firstName: {
-      type: String,
-      required: true,
-    },
-    lastName: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: User,
       required: true,
     },
     location: String,
-    description: String,
+    description: {
+      type: String,
+      required: true,
+    },
     picturePath: String,
     userPicturePath: String,
     likes: {
@@ -28,5 +25,5 @@ const postSchema = mongoose.Schema(
   },
   { timestamps: true }
 );
- const Post=mongoose.model("Post",postSchema)
- export default Post
+const Post = mongoose.model("Post", postSchema);
+export default Post;

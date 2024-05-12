@@ -40,7 +40,10 @@ res=respond we are going to send to the front end
       impressions: Math.floor(Math.random() * 10000),
     });
     const savedUser = await newUser.save();
-    res.status(201).json(savedUser);
+    {
+      const {password, ...response} = savedUser._doc
+      res.status(201).json(response);
+    }
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -50,16 +53,18 @@ export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
     /*We are grabbing the pass and email when the user tries to login  */
-    const user = await User.findOne({ email: email });
+    const user = await User.findOne({ email: email }).select('+password');
     /* We are going to use mongoose to try to find the one that has this specified email and brings back all the user info here  */
-    if (!user) return res.status(400)({ msg: "User does not exist." });
+    if (!user) return res.status(400).json({ msg: "User does not exist." });
     /*when the user can not be found or put a wrong email address */
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400)({ msg: "Invalid credentials" });
+    if (!isMatch) return res.status(400).json({ msg: "Invalid credentials" });
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
-    delete user.password;
-    res.status(200).json({ token, user });
+    {
+      const {password, ...response} = user._doc
+      res.status(200).json({ token, response });
+    }
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
