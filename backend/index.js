@@ -33,7 +33,7 @@ app.use("/users", userRoutes);
 /*whenever we go to those url end points the app uses that router */
 app.use("/posts", postRoutes);
 
-/*MOngoose SEtUp*/
+/*Mongoose SetUp*/
 const PORT = process.env.PORT || 6001;
 connectToDB();
 app.listen(PORT, () => console.log(`Server Port:${PORT}`));
