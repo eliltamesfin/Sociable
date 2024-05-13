@@ -4,17 +4,12 @@ import cors from "cors";
 import helmet from "helmet";
 
 import dotenv from "dotenv";
-import path from "path";
-import { fileURLToPath } from "url";
-import { register } from "./controller/auth.js";
 import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/users.js";
 import postRoutes from "./routes/post.js";
 import connectToDB from "./connectToDB.js";
 
 /* Configurations*/
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 dotenv.config();
 const app = express();
 app.use(express.json());
@@ -34,6 +29,7 @@ app.use("/users", userRoutes);
 app.use("/posts", postRoutes);
 
 /*Mongoose SetUp*/
-const PORT = process.env.PORT || 6001;
 connectToDB();
+
+const PORT = process.env.PORT || 6001;
 app.listen(PORT, () => console.log(`Server Port:${PORT}`));

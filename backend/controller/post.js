@@ -1,22 +1,19 @@
 import Post from "../models/Post.js";
-import User from "../models/User.js";
 
 /*Create */
 export const createPost = async (req, res) => {
   try {
-    const { userId, description, picturePath, location} = req.body;
+    const { description, picturePath, location} = req.body
     const newPost = new Post({
-      userId,
+      userId: req.user.id,
       location: location,
-      description,
-      picturePath,
+      description: description,
+      picturePath: picturePath,
       likes: {},
       comments: [],
     });
-    await newPost.save();
-    const post = await Post.find();
-
-    res.status(201).json(post);
+    const savedPost = await newPost.save();
+    res.status(201).json(savedPost);
   } catch (err) {
     res.status(409).json({ message: err.message });
   }
